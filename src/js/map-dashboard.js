@@ -101,10 +101,12 @@ $(document).ready(function () {
             const buttonMenuDataPendudukPengungsiView = $('#menu-data-penduduk-pengungsi');
             const buttonMenuDataPoskoView = $('#menu-data-posko');
             const buttonMenuDataKorbanView = $('#menu-data-korban');
+            const buttonMenuInfrastrukturView = $('#menu-data-infrastruktur');
 
             const dataPendudukPengungsiView = $('#data-penduduk-pengungsi');
             const dataPoskoView = $('#data-posko');
             const dataKorbanView = $('#data-korban');
+            const dataInfrastrukturView = $('#data-infrastruktur');
 
             let currentInformasiView = menuInformasiUmumView;
 
@@ -155,6 +157,17 @@ $(document).ready(function () {
                 titleInformasiUmumDialogView.text(`Data Korban - Desa ${namaDesa}`);
 
                 showMapDataKorban(namaDesa);
+            });
+
+            buttonMenuInfrastrukturView.on('click', function () {
+                currentInformasiView.addClass('hidden');
+                dataInfrastrukturView.removeClass('hidden');
+                currentInformasiView = dataInfrastrukturView;
+                buttonBackInformasiUmumDialogView.removeClass('hidden');
+
+                titleInformasiUmumDialogView.text(`Data Infrastruktur - Desa ${namaDesa}`);
+
+                showMapDataInfrastruktur(namaDesa);
             });
 
             view.on('click', function (event) {
@@ -293,6 +306,47 @@ $(document).ready(function () {
                     center: [clickedPosition.long, clickedPosition.lat], // Longitude, latitude
                     zoom: 13, // Zoom level
                     container: "data-korban-map", // Div element,
+                    ui: {
+                        components: ["attribution"]
+                    },
+                });
+
+                const desaCugenangLayer = new FeatureLayer({
+                    url: "https://geo.temanjabar.net/geoserver/gsr/services/temanjabar/FeatureServer/18/",
+                    renderer: desaCugenangRenderer,
+                    opacity: 0.75,
+                });
+
+                const results = await desaCugenangLayer.queryFeatures({
+                    where: `namobj = '${namaDesa}'`,  // Set by select element
+                    spatialRelationship: "intersects", // Relationship operation to apply
+                    geometry: view.extent, // Restricted to visible extent of the map
+                    outFields: ["*"], // Attributes to return
+                    returnGeometry: true
+                });
+
+                results.features.map((feature) => {
+                    feature.symbol = {
+                        "color": colorMap[namaDesa],
+                        "type": "simple-fill",
+                        "style": "solid",
+                        "outline": null
+                    };
+                });
+
+                view.graphics.addMany(results.features);
+            }
+
+            async function showMapDataInfrastruktur(namaDesa) {
+                const map = new Map({
+                    basemap: "arcgis-charted-territory" // Basemap layer service
+                });
+
+                const view = new MapView({
+                    map: map,
+                    center: [clickedPosition.long, clickedPosition.lat], // Longitude, latitude
+                    zoom: 13, // Zoom level
+                    container: "data-infrastruktur-map", // Div element,
                     ui: {
                         components: ["attribution"]
                     },
