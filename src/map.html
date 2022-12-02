@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/dist/css/output.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+
+    <title>Map Dashboard Monitoring Bencana | DBMPR</title>
+</head>
+
+<body>
+    <div id="map-container" style=" min-width: 100vw; min-height: 100vh"></div>
+
+
+    <div class="relative hidden z-10" role="dialog" aria-modal="true" id="informasi-dialog">
+
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-stretch justify-center text-center md:items-center">
+                <div
+                    class="flex w-full transform text-left text-base transition md:my-8 md:max-w-2xl md:px-4 lg:max-w-4xl">
+                    <div class="relative flex w-full items-center overflow-hidden bg-gray-50 rounded-md shadow-2xl">
+                        <!-- Button Close -->
+                        <button type="button" class="absolute top-5 right-6 text-gray-400 hover:text-gray-500"
+                            id="button-close-informasi-dialog">
+                            <span class="sr-only">Close</span>
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                        <!-- End Button Close -->
+                        <div class="grow">
+                            <div class="flex items-center bg-white border-b border-b-gray-100 px-6 py-5">
+                                <button id="button-back-informasi-dialog" class="hidden">
+                                    <i class="fa-solid fa-chevron-left text-gray-400 hover:text-gray-500 mr-3"></i>
+                                </button>
+                                <span id="title-informasi-dialog" class="text-xl font-roboto font-bold text-gray-900">
+                                    Informasi Umum
+                                </span>
+                            </div>
+                            <div class="px-6 py-6 overflow-y-auto" id="informasi-container">
+                                <!-- Menu Informasi -->
+                                <div id="menu-informasi">
+                                    <!-- Data Penduduk -->
+                                    <div id="menu-data-penduduk-pengungsi"
+                                        class="flex box-border bg-white items-center rounded-md border-[1.5px] border-gray-300 p-4 transition hover:border-[1.5px] hover:border-primaryGreen hover:cursor-pointer">
+                                        <img class="w-8" src="../assets/icons/ic_data_penduduk.svg"
+                                            alt="Icon Data Penduduk">
+                                        <span class="ml-3 font-roboto font-semibold text-gray-900 grow">
+                                            Data Penduduk Pengungsi
+                                        </span>
+                                        <i class="fa-regular fa-chevron-right text-2xl text-primaryGreen"></i>
+                                    </div>
+                                    <!-- End Data Penduduk -->
+
+                                    <!-- Posko Siaga Bencana -->
+                                    <div id="menu-data-posko"
+                                        class="flex box-border bg-white items-center rounded-md border-[1.5px] border-gray-300 p-4 transition hover:border-[1.5px] hover:border-primaryGreen hover:cursor-pointer mt-4">
+                                        <img class="w-8" src="../assets/icons/ic_posko_siaga_bencana.svg"
+                                            alt="Icon Data Penduduk">
+                                        <span class="ml-3 font-roboto font-semibold text-gray-900 grow">Posko Siaga
+                                            Bencana</span>
+                                        <i class="fa-regular fa-chevron-right text-2xl text-primaryGreen"></i>
+                                    </div>
+                                    <!-- End Posko Siaga Bencana -->
+
+                                    <!-- Data Korban Bencana -->
+                                    <div id="menu-data-korban"
+                                        class="flex box-border bg-white items-center rounded-md border-[1.5px] border-gray-300 p-4 transition hover:border-[1.5px] hover:border-primaryGreen hover:cursor-pointer mt-4">
+                                        <img class="w-8" src="../assets/icons/ic_korban_bencana.svg"
+                                            alt="Icon Data Penduduk">
+                                        <span class="ml-3 font-roboto font-semibold text-gray-900 grow">Data Korban
+                                            Bencana</span>
+                                        <i class="fa-regular fa-chevron-right text-2xl text-primaryGreen"></i>
+                                    </div>
+                                    <!-- End Data Korban Bencana -->
+
+                                    <!-- Data Infrastruktur Terdampak -->
+                                    <div id="menu-data-infrastruktur"
+                                        class="flex box-border bg-white items-center rounded-md border-[1.5px] border-gray-300 p-4 transition hover:border-[1.5px] hover:border-primaryGreen hover:cursor-pointer mt-4">
+                                        <img class="w-8" src="../assets/icons/ic_infrastruktur_terdampak.svg"
+                                            alt="Icon Data Penduduk">
+                                        <span class="ml-3 font-roboto font-semibold text-gray-900 grow">
+                                            Data Infrastruktur Terdampak
+                                        </span>
+                                        <i class="fa-regular fa-chevron-right text-2xl text-primaryGreen"></i>
+                                    </div>
+                                    <!-- End Data Infrastruktur Terdampak -->
+
+                                    <!-- Data Fasilitas Umum Terdampak -->
+                                    <div id="menu-data-fasum"
+                                        class="flex box-border bg-white items-center rounded-md border-[1.5px] border-gray-300 p-4 transition hover:border-[1.5px] hover:border-primaryGreen hover:cursor-pointer mt-4">
+                                        <img class="w-8" src="../assets/icons/ic_fasum_terdampak.svg"
+                                            alt="Icon Data Penduduk">
+                                        <span class="ml-3 font-roboto font-semibold text-gray-900 grow">
+                                            Data Fasilitas Umum Terdampak
+                                        </span>
+                                        <i class="fa-regular fa-chevron-right text-2xl text-primaryGreen"></i>
+                                    </div>
+                                    <!-- End Data Fasilitas Umum Terdampak -->
+
+                                    <!-- Data Logistik -->
+                                    <div id="menu-data-logistik"
+                                        class="flex box-border bg-white items-center rounded-md border-[1.5px] border-gray-300 p-4 transition hover:border-[1.5px] hover:border-primaryGreen hover:cursor-pointer mt-4">
+                                        <img class="w-8" src="../assets/icons/ic_data_logistik.svg"
+                                            alt="Icon Data Penduduk">
+                                        <span class="ml-3 font-roboto font-semibold text-gray-900 grow">
+                                            Data Logistik
+                                        </span>
+                                        <i class="fa-regular fa-chevron-right text-2xl text-primaryGreen"></i>
+                                    </div>
+                                    <!-- End Data Logistik -->
+                                </div>
+                                <!-- End Menu Informasi -->
+
+                                <!-- Data Penduduk Pengungsi -->
+                                <div class="hidden" id="data-penduduk-pengungsi">
+                                    <div class="static flex gap-3 justify-between">
+                                        <!-- Total Pengungsi -->
+                                        <div class="relative grow bg-primaryGreen rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-white font-roboto font-bold uppercase border-b border-b-green-500 pb-2">
+                                                Total Pengungsi
+                                            </span>
+                                            <span class="inline-block mt-3 text-sm text-white font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block mt-3 text-sm text-white font-roboto font-bold">
+                                                Jiwa
+                                            </span>
+                                        </div>
+                                        <!-- End Total Pengungsi -->
+
+                                        <!-- Total Lansia -->
+                                        <div class="relative grow bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                Lansia
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Jiwa
+                                            </span>
+                                        </div>
+                                        <!-- End Total Lansia -->
+
+                                        <!-- Total Anak-Anak > 5thn -->
+                                        <div class="relative grow bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <div
+                                                class="flex items-center text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                <span>Anak-anak</span>
+                                                <i class="fa-solid fa-greater-than text-xs mx-2"></i>
+                                                <span>5 thn</span>
+                                            </div>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Jiwa
+                                            </span>
+                                        </div>
+                                        <!-- End Total Anak-Anak > 5thn -->
+
+                                        <!-- Total Balita <= 5thn -->
+                                        <div class="relative grow bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <div
+                                                class="flex items-center text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                <span>Balita</span>
+                                                <i class="fa-solid fa-less-than-equal text-xs mx-2"></i>
+                                                <span>5 thn</span>
+                                            </div>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Jiwa
+                                            </span>
+                                        </div>
+                                        <!-- End Total Balita <= 5thn -->
+                                    </div>
+
+                                    <div class="border border-gray-200 my-5"></div>
+
+                                    <div id="data-penduduk-pengungsi-map"
+                                        class="w-full aspect-video rounded-md overflow-clip">
+                                    </div>
+                                </div>
+                                <!-- End Data Penduduk Pengungsi -->
+
+                                <!-- Data Posko -->
+                                <div class="hidden" id="data-posko">
+                                    <div class="static flex gap-3 justify-between">
+                                        <!-- Total Posko -->
+                                        <div class="relative grow bg-primaryGreen rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-white font-roboto font-bold uppercase border-b border-b-green-500 pb-2">
+                                                Total Posko
+                                            </span>
+                                            <span class="inline-block mt-3 text-sm text-white font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block mt-3 text-sm text-white font-roboto font-bold">
+                                                Unit
+                                            </span>
+                                        </div>
+                                        <!-- End Total Posko -->
+
+                                        <!-- Total Posko Terpusat -->
+                                        <div class="relative grow bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                Posko Terpusat
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Unit
+                                            </span>
+                                        </div>
+                                        <!-- End Total Posko Terpusat -->
+
+                                        <!-- Total Posko Mandiri -->
+                                        <div class="relative grow bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                Posko Mandiri
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Unit
+                                            </span>
+                                        </div>
+                                        <!-- End Total Posko Mandiri -->
+
+                                        <!-- Total Posko Relawan -->
+                                        <div class="relative grow bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                Posko Relawan
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Unit
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- End Total Posko Relawan -->
+
+                                    <div class="border border-gray-200 my-5"></div>
+
+                                    <div id="data-posko-map" class="w-full aspect-video rounded-md overflow-clip">
+                                    </div>
+                                </div>
+                                <!-- End Data Posko -->
+
+                                <!-- Data Korban Bencana -->
+                                <div class="hidden" id="data-korban">
+                                    <div class="grid grid-cols-4 gap-3">
+                                        <!-- Total Korban -->
+                                        <div class="relative bg-primaryGreen rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-white font-roboto font-bold uppercase border-b border-b-green-500 pb-2">
+                                                Total Korban
+                                            </span>
+                                            <span class="inline-block mt-3 text-sm text-white font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block mt-3 text-sm text-white font-roboto font-bold">
+                                                Jiwa
+                                            </span>
+                                        </div>
+                                        <!-- End Total Korban -->
+
+                                        <!-- Total Meninggal -->
+                                        <div class="relative bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                Meninggal
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Jiwa
+                                            </span>
+                                        </div>
+                                        <!-- End Total Meninggal -->
+
+                                        <!-- Total Rujuk RS -->
+                                        <div class="relative bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                Rujuk RS
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Jiwa
+                                            </span>
+                                        </div>
+                                        <!-- End Total Rujuk RS -->
+
+                                        <!-- Total Pulang RS -->
+                                        <div class="relative bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                Pulang RS
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Jiwa
+                                            </span>
+                                        </div>
+                                        <!-- End Total Pulang RS -->
+
+                                        <!-- Total Luka Berat -->
+                                        <div class="relative bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                Luka Berat
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Jiwa
+                                            </span>
+                                        </div>
+                                        <!-- End Total Luka Berat -->
+
+                                        <!-- Total Luka Ringan -->
+                                        <div class="relative bg-white rounded-md p-4">
+                                            <img class="absolute top-2 right-2 h-[4rem]"
+                                                src="../assets/images/statistic-accent-success.svg" alt="">
+                                            <span
+                                                class="block text-gray-900 font-roboto font-bold uppercase border-b border-b-gray-100 pb-2">
+                                                Luka Ringan
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                3148
+                                            </span>
+                                            <span class="inline-block text-gray-600 mt-3 text-sm font-roboto font-bold">
+                                                Jiwa
+                                            </span>
+                                        </div>
+                                        <!-- End Total Luka Ringan -->
+                                    </div>
+
+                                    <div class="border border-gray-200 my-5"></div>
+
+                                    <div id="data-korban-map" class="w-full aspect-video rounded-md overflow-clip">
+                                    </div>
+                                </div>
+                                <!-- End Data Posko -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/726e9879eb.js"></script>
+    <script src="https://js.arcgis.com/4.25/"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <script src="./js/map-dashboard.js"></script>
+</body>
+
+</html>
